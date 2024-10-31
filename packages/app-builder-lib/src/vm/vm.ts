@@ -1,4 +1,4 @@
-import { DebugLogger, exec, ExtraSpawnOptions, InvalidConfigurationError, spawn } from "builder-util"
+import { DebugLogger, exec, ExtraSpawnOptions, InvalidConfigurationError, log, spawn } from "builder-util"
 import { ExecFileOptions, SpawnOptions } from "child_process"
 import { readFileSync, statSync } from "fs-extra"
 import * as path from "path"
@@ -23,9 +23,11 @@ export class VmManager {
   getPSCmd(): Promise<string> {
     return this.exec("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", `Get-Command pwsh.exe`])
       .then(() => {
+        log.debug(null, "identified pwsh.exe for executing code signing")
         return "pwsh.exe"
       })
       .catch(() => {
+        log.debug(null, "unable to find pwsh.exe, falling back to powershell.exe")
         return "powershell.exe"
       })
   }
@@ -33,6 +35,7 @@ export class VmManager {
 
 export async function getWindowsVm(debugLogger: DebugLogger): Promise<VmManager> {
   if (isDocker()) {
+    log.info(null, "identified inside docker container, using `pwsh` for powershell")
     const dockerVmModule = await import("./DockerVm")
     return new dockerVmModule.DockerVmManager()
   }
@@ -65,7 +68,7 @@ function hasDockerCGroup() {
   }
 }
 
-function isDocker() {
+export function isDocker() {
   // TODO: Use `??=` when targeting Node.js 16.
   if (isDockerCached === undefined) {
     isDockerCached = hasDockerEnv() || hasDockerCGroup()

@@ -1,4 +1,4 @@
-import { VmManager } from "./vm";
+import { VmManager } from "./vm"
 
 export class DockerVmManager extends VmManager {
   constructor() {

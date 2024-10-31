@@ -22,7 +22,7 @@ RUN apt-get update && \
   wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb && \
   dpkg -i packages-microsoft-prod.deb && \
   rm packages-microsoft-prod.deb
-  #  generate changeset
+  #  generate changesettt
 
 RUN apt-get update && \
   apt-get install -y powershell \
