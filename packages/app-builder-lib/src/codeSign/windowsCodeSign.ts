@@ -1,6 +1,5 @@
 import { log, retry } from "builder-util"
 import { WindowsConfiguration } from "../options/winOptions"
-import { VmManager } from "../vm/vm"
 import { WinPackager } from "../winPackager"
 
 export interface WindowsSignOptions {
@@ -9,7 +8,6 @@ export interface WindowsSignOptions {
 }
 
 export async function signWindows(options: WindowsSignOptions, packager: WinPackager): Promise<boolean> {
-  const packageManager = await packager.signingManager.value
   if (options.options.azureSignOptions) {
     if (options.options.signtoolOptions) {
       log.warn(null, "ignoring signtool options, using Azure Trusted Signing; please only configure one")
@@ -37,7 +35,7 @@ export async function signWindows(options: WindowsSignOptions, packager: WinPack
       log.warn({ fields, reason: "please move to win.signtoolOptions.<field_name>" }, `deprecated field`)
     }
   }
-
+  const packageManager = await packager.signingManager.value
   return signWithRetry(async () => packageManager.signFile(options))
 }
 
