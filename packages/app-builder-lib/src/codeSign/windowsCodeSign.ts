@@ -56,16 +56,3 @@ function signWithRetry(signer: () => Promise<boolean>): Promise<boolean> {
     return false
   })
 }
-
-export async function getPSCmd(vm: VmManager): Promise<string> {
-  return await vm
-    .exec("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", `Get-Command pwsh.exe`])
-    .then(() => {
-      log.debug(null, "identified pwsh.exe for executing code signing")
-      return "pwsh.exe"
-    })
-    .catch(() => {
-      log.debug(null, "unable to find pwsh.exe, falling back to powershell.exe")
-      return "powershell.exe"
-    })
-}

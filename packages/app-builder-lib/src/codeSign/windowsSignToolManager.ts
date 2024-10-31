@@ -12,7 +12,6 @@ import { VmManager } from "../vm/vm"
 import { WinPackager } from "../winPackager"
 import { chooseNotNull } from "../platformPackager"
 import { WindowsSignOptions } from "./windowsCodeSign"
-import { getPSCmd } from "./windowsCodeSign"
 import { MemoLazy, parseDn } from "builder-util-runtime"
 import { Lazy } from "lazy-val"
 import { importCertificate } from "./codesign"
@@ -398,7 +397,7 @@ export class WindowsSignToolManager implements SignManager {
     const certificateSubjectName = chooseNotNull(options.signtoolOptions?.certificateSubjectName, options.certificateSubjectName)
     const certificateSha1 = chooseNotNull(options.signtoolOptions?.certificateSha1, options.certificateSha1)?.toUpperCase()
 
-    const ps = await getPSCmd(vm)
+    const ps = await vm.getPSCmd()
     const rawResult = await vm.exec(ps, [
       "-NoProfile",
       "-NonInteractive",
