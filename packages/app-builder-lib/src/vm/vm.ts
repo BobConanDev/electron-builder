@@ -1,6 +1,6 @@
-import { DebugLogger, exec, ExtraSpawnOptions, InvalidConfigurationError, log, spawn } from "builder-util"
+import { DebugLogger, exec, exists, ExtraSpawnOptions, InvalidConfigurationError, log, spawn } from "builder-util"
 import { ExecFileOptions, SpawnOptions } from "child_process"
-import { readFileSync, statSync } from "fs-extra"
+import { readFile } from "fs-extra"
 import { Lazy } from "lazy-val"
 import * as path from "path"
 export class VmManager {
@@ -34,10 +34,10 @@ export class VmManager {
 }
 
 export async function getWindowsVm(debugLogger: DebugLogger): Promise<VmManager> {
-  // if (isDocker()) {
-  //   const dockerVmModule = await import("./DockerVm")
-  //   return new dockerVmModule.DockerVmManager()
-  // }
+  if (await isDocker.value) {
+    const dockerVmModule = await import("./DockerVm")
+    return new dockerVmModule.DockerVmManager()
+  }
   const parallelsVmModule = await import("./ParallelsVm")
   const vmList = (await parallelsVmModule.parseVmList(debugLogger)).filter(it => ["win-10", "win-11"].includes(it.os))
   if (vmList.length === 0) {
@@ -48,30 +48,10 @@ export async function getWindowsVm(debugLogger: DebugLogger): Promise<VmManager>
   return new parallelsVmModule.ParallelsVmManager(vmList.find(it => it.state === "running") || vmList.find(it => it.state === "suspended") || vmList[0])
 }
 
-let isDockerCached: boolean | undefined
-
-function hasDockerEnv() {
+const isDocker = new Lazy(async () => {
   try {
-    statSync("/.dockerenv")
-    return true
+    return (await exists("/.dockerenv")) || (await readFile("/proc/self/cgroup", "utf8")).includes("docker")
   } catch {
     return false
   }
-}
-
-function hasDockerCGroup() {
-  try {
-    return readFileSync("/proc/self/cgroup", "utf8").includes("docker")
-  } catch {
-    return false
-  }
-}
-
-export function isDocker() {
-  // TODO: Use `??=` when targeting Node.js 16.
-  if (isDockerCached === undefined) {
-    isDockerCached = hasDockerEnv() || hasDockerCGroup()
-  }
-
-  return isDockerCached
-}
+})
