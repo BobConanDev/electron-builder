@@ -540,8 +540,8 @@ importers:
         specifier: 4.0.3
         version: 4.0.3
       '@types/lodash.escaperegexp':
-        specifier: 4.1.6
-        version: 4.1.6
+        specifier: 4.1.9
+        version: 4.1.9
       '@types/lodash.isequal':
         specifier: 4.5.5
         version: 4.5.5
@@ -2358,8 +2358,8 @@ packages:
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
 
-  '@types/lodash.escaperegexp@4.1.6':
-    resolution: {integrity: sha512-uENiqxLlqh6RzeE1cC6Z2gHqakToN9vKlTVCFkSVjAfeMeh2fY0916tHwJHeeKs28qB/hGYvKuampGYH5QDVCw==}
+  '@types/lodash.escaperegexp@4.1.9':
+    resolution: {integrity: sha512-CMQc8v16YzhnPZnMhYQuJUksI8BmL1jy/lHJkiXi4/t24Lx7Qvy7qxew1abrDJGa1T2i0NzLLaR27NK1/qp5Ow==}
 
   '@types/lodash.isequal@4.5.5':
     resolution: {integrity: sha512-4IKbinG7MGP131wRfceK6W4E/Qt3qssEFLF30LnJbjYiSfHGGRU/Io8YxXrZX109ir+iDETC8hw8QsDijukUVg==}
@@ -2833,6 +2833,7 @@ packages:
 
   boolean@3.2.0:
     resolution: {integrity: sha512-d0II/GO9uf9lfUHH2BQsjxzRJZBdsjgsBiW4BvhWk/3qoKwQFjIDVN19PfX8F2D/r9PCMTtLWjYVCFrpeYUzsw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   brace-expansion@1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
@@ -5258,6 +5259,7 @@ packages:
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
     deprecated: |-
       You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
+
       (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
 
   query-ast@1.0.5:
@@ -8637,7 +8639,7 @@ snapshots:
     dependencies:
       '@types/node': 22.7.4
 
-  '@types/lodash.escaperegexp@4.1.6':
+  '@types/lodash.escaperegexp@4.1.9':
     dependencies:
       '@types/lodash': 4.14.202
 
