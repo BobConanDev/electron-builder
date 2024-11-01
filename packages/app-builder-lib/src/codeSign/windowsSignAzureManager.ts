@@ -29,7 +29,7 @@ export class WindowsSignAzureManager implements SignManager {
 
   async initialize() {
     const vm = await this.packager.vm.value
-    const ps = await vm.getPSCmd()
+    const ps = await vm.powershellCommand.value
 
     log.info(null, "installing required module (TrustedSigning) with scope CurrentUser")
     try {
@@ -105,7 +105,7 @@ export class WindowsSignAzureManager implements SignManager {
   // prerequisite: requires `initializeProviderModules` to already have been executed
   async signFile(options: WindowsSignOptions): Promise<boolean> {
     const vm = await this.packager.vm.value
-    const ps = await vm.getPSCmd()
+    const ps = await vm.powershellCommand.value
 
     const {
       publisherName: _publisher, // extract from `extraSigningArgs`

@@ -397,7 +397,7 @@ export class WindowsSignToolManager implements SignManager {
     const certificateSubjectName = chooseNotNull(options.signtoolOptions?.certificateSubjectName, options.certificateSubjectName)
     const certificateSha1 = chooseNotNull(options.signtoolOptions?.certificateSha1, options.certificateSha1)?.toUpperCase()
 
-    const ps = await vm.getPSCmd()
+    const ps = await vm.powershellCommand.value
     const rawResult = await vm.exec(ps, [
       "-NoProfile",
       "-NonInteractive",

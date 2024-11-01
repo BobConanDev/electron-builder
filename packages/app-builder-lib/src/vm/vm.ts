@@ -1,8 +1,8 @@
 import { DebugLogger, exec, ExtraSpawnOptions, InvalidConfigurationError, log, spawn } from "builder-util"
 import { ExecFileOptions, SpawnOptions } from "child_process"
 import { readFileSync, statSync } from "fs-extra"
+import { Lazy } from "lazy-val"
 import * as path from "path"
-
 export class VmManager {
   get pathSep(): string {
     return path.sep
@@ -20,22 +20,21 @@ export class VmManager {
     return file
   }
 
-  getPSCmd(): Promise<string> {
+  readonly powershellCommand = new Lazy(() => {
     return this.exec("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", `Get-Command pwsh.exe`])
       .then(() => {
-        log.debug(null, "identified pwsh.exe for executing code signing")
+        log.info(null, "identified pwsh.exe")
         return "pwsh.exe"
       })
       .catch(() => {
-        log.debug(null, "unable to find pwsh.exe, falling back to powershell.exe")
+        log.info(null, "unable to find pwsh.exe, falling back to powershell.exe")
         return "powershell.exe"
       })
-  }
+  })
 }
 
 export async function getWindowsVm(debugLogger: DebugLogger): Promise<VmManager> {
   if (isDocker()) {
-    log.info(null, "identified inside docker container, using `pwsh` for powershell")
     const dockerVmModule = await import("./DockerVm")
     return new dockerVmModule.DockerVmManager()
   }
