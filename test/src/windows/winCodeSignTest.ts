@@ -119,7 +119,7 @@ test.ifAll.ifNotCiMac(
   })
 )
 
-test.ifAll.ifNotCiMac(
+test.ifAll.ifNotMac(
   "azure signing without credentials",
   appThrows(
     {

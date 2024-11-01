@@ -2,7 +2,7 @@
 
 exports[`electronDist 1`] = `"ENOENT"`;
 
-exports[`forceCodeSigning 1`] = `"ERR_ELECTRON_BUILDER_INVALID_CONFIGURATION"`;
+exports[`forceCodeSigning 1`] = `"ERR_ELECTRON_BUILDER_CANNOT_EXECUTE"`;
 
 exports[`parseDn 1`] = `
 Map {
