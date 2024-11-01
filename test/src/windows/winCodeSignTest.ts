@@ -31,7 +31,7 @@ test.ifNotMac(
       },
     },
     error => {
-      if (process.platform === 'linux') {
+      if (process.platform === "linux") {
         expect(error.message).toContain("Unrecognized file type")
       } else {
         expect(error.message).toContain("This file format cannot be signed because it is not recognized.")
@@ -121,18 +121,28 @@ test.ifAll.ifNotCiMac(
 
 test.ifAll.ifNotCiMac(
   "azure signing without credentials",
-  appThrows({
-    targets: windowsDirTarget,
-    config: {
-      forceCodeSigning: true,
-      win: {
-        azureSignOptions: {
-          publisherName: "test",
-          endpoint: "https://weu.codesigning.azure.net/",
-          certificateProfileName: "profilenamehere",
-          codeSigningAccountName: "codesigningnamehere",
+  appThrows(
+    {
+      targets: windowsDirTarget,
+      config: {
+        forceCodeSigning: true,
+        win: {
+          azureSignOptions: {
+            publisherName: "test",
+            endpoint: "https://weu.codesigning.azure.net/",
+            certificateProfileName: "profilenamehere",
+            codeSigningAccountName: "codesigningnamehere",
+          },
         },
       },
     },
-  })
+    {},
+    error => {
+      if (process.platform === "linux") {
+        expect(error.message).toContain("Exit code: ENOENT. spawn pwsh ENOENT")
+      } else {
+        expect(error.message).toContain("Unable to find valid azure env field AZURE_TENANT_ID for signing.")
+      }
+    }
+  )
 )
