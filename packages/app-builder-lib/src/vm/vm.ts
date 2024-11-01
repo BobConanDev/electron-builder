@@ -34,10 +34,10 @@ export class VmManager {
 }
 
 export async function getWindowsVm(debugLogger: DebugLogger): Promise<VmManager> {
-  if (isDocker()) {
-    const dockerVmModule = await import("./DockerVm")
-    return new dockerVmModule.DockerVmManager()
-  }
+  // if (isDocker()) {
+  //   const dockerVmModule = await import("./DockerVm")
+  //   return new dockerVmModule.DockerVmManager()
+  // }
   const parallelsVmModule = await import("./ParallelsVm")
   const vmList = (await parallelsVmModule.parseVmList(debugLogger)).filter(it => ["win-10", "win-11"].includes(it.os))
   if (vmList.length === 0) {
