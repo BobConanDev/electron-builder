@@ -15,16 +15,17 @@ RUN dpkg --add-architecture i386 && \
   # clean
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# setup wine home configuration from electron-builder-binaries snapshot
 RUN curl -L https://github.com/electron-userland/electron-builder-binaries/releases/download/wine-2.0.3-mac-10.13/wine-home.zip > /tmp/wine-home.zip && unzip /tmp/wine-home.zip -d /root/.wine && unlink /tmp/wine-home.zip
 
+# install powershell
 RUN apt-get update && \
   apt-get install -y apt-transport-https software-properties-common && \
   wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb && \
   dpkg -i packages-microsoft-prod.deb && \
-  rm packages-microsoft-prod.deb
-  #  generate changesettt
-
-RUN apt-get update && \
+  rm packages-microsoft-prod.deb && \
+  # install
+  apt-get update && \
   apt-get install -y powershell \
   && \
   # clean
