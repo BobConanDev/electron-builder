@@ -19,6 +19,7 @@ RUN dpkg --add-architecture i386 && \
   wget -q https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb && \
   dpkg -i packages-microsoft-prod.deb && \
   rm packages-microsoft-prod.deb && \
+  apt-get update && \
   apt-get install -y --no-install-recommends powershell && \
   # clean
   apt-get clean && rm -rf /var/lib/apt/lists/*
