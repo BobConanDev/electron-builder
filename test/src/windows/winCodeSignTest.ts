@@ -141,7 +141,7 @@ test.ifAll.ifNotCiMac(
   )
 )
 
-test.ifAll.ifNotCiMac(
+test.ifLinux(
   "win code sign using pwsh",
   app(
     {
