@@ -2,7 +2,7 @@ import { DIR_TARGET, Platform } from "electron-builder"
 import { outputFile } from "fs-extra"
 import * as path from "path"
 import { CheckingWinPackager } from "../helpers/CheckingPackager"
-import { app, appThrows, assertPack } from "../helpers/packTester"
+import { app, appThrows } from "../helpers/packTester"
 import { parseDn } from "builder-util-runtime"
 import { load } from "js-yaml"
 
@@ -142,8 +142,7 @@ test.ifAll.ifNotCiMac(
 )
 
 test.ifAll.ifNotCiMac("win code sign using pwsh", () =>
-  assertPack(
-    "test-app",
+  app(
     {
       targets: Platform.WINDOWS.createTarget(DIR_TARGET),
     },
