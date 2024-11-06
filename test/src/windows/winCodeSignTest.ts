@@ -2,7 +2,7 @@ import { DIR_TARGET, Platform } from "electron-builder"
 import { outputFile } from "fs-extra"
 import * as path from "path"
 import { CheckingWinPackager } from "../helpers/CheckingPackager"
-import { app, appThrows } from "../helpers/packTester"
+import { app, appThrows, assertPack } from "../helpers/packTester"
 import { parseDn } from "builder-util-runtime"
 import { load } from "js-yaml"
 
@@ -119,7 +119,7 @@ test.ifAll.ifNotCiMac(
   })
 )
 
-test.ifAll.ifNotMac(
+test.ifAll.ifNotCiMac(
   "azure signing without credentials",
   appThrows(
     {
@@ -137,12 +137,18 @@ test.ifAll.ifNotMac(
       },
     },
     {},
-    error => {
-      if (process.platform === "linux") {
-        expect(error.message).toContain("Exit code: ENOENT. spawn pwsh ENOENT")
-      } else {
-        expect(error.message).toContain("Unable to find valid azure env field AZURE_TENANT_ID for signing.")
-      }
+    error => expect(error.message).toContain("Unable to find valid azure env field AZURE_TENANT_ID for signing.")
+  )
+)
+
+test.ifAll.ifNotCiMac("win code sign using pwsh", () =>
+  assertPack(
+    "test-app",
+    {
+      targets: Platform.WINDOWS.createTarget(DIR_TARGET),
+    },
+    {
+      signedWin: true,
     }
   )
 )

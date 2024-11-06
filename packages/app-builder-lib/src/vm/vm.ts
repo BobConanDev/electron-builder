@@ -1,6 +1,5 @@
-import { DebugLogger, exec, exists, ExtraSpawnOptions, InvalidConfigurationError, log, spawn } from "builder-util"
+import { DebugLogger, exec, ExtraSpawnOptions, InvalidConfigurationError, log, spawn } from "builder-util"
 import { ExecFileOptions, SpawnOptions } from "child_process"
-import { readFile } from "fs-extra"
 import { Lazy } from "lazy-val"
 import * as path from "path"
 export class VmManager {
@@ -34,9 +33,9 @@ export class VmManager {
 }
 
 export async function getWindowsVm(debugLogger: DebugLogger): Promise<VmManager> {
-  if (await isDocker.value) {
-    const dockerVmModule = await import("./DockerVm")
-    return new dockerVmModule.DockerVmManager()
+  if (await isPwshAvailable.value) {
+    const vmModule = await import("./PwshVm")
+    return new vmModule.PwshVmManager()
   }
   const parallelsVmModule = await import("./ParallelsVm")
   const vmList = (await parallelsVmModule.parseVmList(debugLogger)).filter(it => ["win-10", "win-11"].includes(it.os))
@@ -48,9 +47,10 @@ export async function getWindowsVm(debugLogger: DebugLogger): Promise<VmManager>
   return new parallelsVmModule.ParallelsVmManager(vmList.find(it => it.state === "running") || vmList.find(it => it.state === "suspended") || vmList[0])
 }
 
-const isDocker = new Lazy(async () => {
+export const isPwshAvailable = new Lazy(async () => {
   try {
-    return (await exists("/.dockerenv")) || (await readFile("/proc/self/cgroup", "utf8")).includes("docker")
+    await exec("pwsh", ["--version"])
+    return true
   } catch {
     return false
   }
