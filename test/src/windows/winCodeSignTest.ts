@@ -141,7 +141,8 @@ test.ifAll.ifNotCiMac(
   )
 )
 
-test.ifAll.ifNotCiMac("win code sign using pwsh", () =>
+test.ifAll.ifNotCiMac(
+  "win code sign using pwsh",
   app(
     {
       targets: Platform.WINDOWS.createTarget(DIR_TARGET),

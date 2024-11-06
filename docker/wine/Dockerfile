@@ -5,8 +5,8 @@ RUN dpkg --add-architecture i386 && \
   # prep wine
   curl -Lo /usr/share/keyrings/winehq.asc https://dl.winehq.org/wine-builds/winehq.key && \
   echo 'deb [signed-by=/usr/share/keyrings/winehq.asc] https://dl.winehq.org/wine-builds/ubuntu/ focal main' > /etc/apt/sources.list.d/winehq.list && \
-  # update and install deps
   apt-get update && \
+  # install wine
   apt-get install -y --no-install-recommends \
   # We can't install `winehq-stable`, we must manually lock each dependency to v6 (ref: https://github.com/electron-userland/electron-builder/issues/6780),
   winehq-stable=6.0.4~focal-1 \
